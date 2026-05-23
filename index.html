@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3/6 FLIP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        /* ── COULEURS — modifie ici ── */
+        :root {
+            --bg:      #242424;
+            --fg:      #f8f0e7;
+            --pink:    #30e578;
+            --teal:    #30e578;
+            --border:  rgba(255, 255, 255, 0.22);
+            --muted:   rgba(255,255,255,0.4);
+            --font:      'Barlow', sans-serif;
+            --font-cond: 'Barlow Condensed', sans-serif; 
+        }
+        @font-face {
+
+    font-family: "femmefatale";
+
+    src: url("sk-femme-fatale-trial.ttf") format("truetype");
+
+    font-weight: normal;
+
+    font-style: normal;
+
+}
+      @font-face {
+
+    font-family: "baunk";
+
+    src: url("Baunk.otf") format("opentype");
+
+    font-weight: normal;
+
+    font-style: normal;
+
+}
+        html { background: var(--bg); color: var(--fg); font-family: var(--font); font-size: 13px; scroll-behavior: smooth; }
+        body { overflow-x: hidden; }
+
+        /* grain texture */
+        body::after {
+            content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 9000; opacity: .045;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        }
+
+        /* ── NAV ── */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 22px 36px;
+            background: var(--bg);
+            transition: background .3s, backdrop-filter .3s, border-bottom .3s;
+        }
+        .nav-logo { font-family: var(--font-cond); font-weight: 900; font-size: 14px; letter-spacing: .18em; text-transform: uppercase; }
+        .nav-links { display: flex; gap: 44px; }
+        .nav-links a { color: var(--fg); text-decoration: none; font-size: 12px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; transition: color .2s; }
+        .nav-links a:hover { color: var(--pink); }
+        .nav-links a sup { font-size: 8px; color: var(--teal); font-weight: 400; }
+
+        /* ── SECTION FILMS ── */
+       #films { padding: 120px 160px 80px; }
+
+        .sec-header {
+            display: flex; justify-content: space-between; align-items: center;
+            border-top: 1px solid var(--border); padding-top: 14px; margin-bottom: 40px;
+        }
+        .sec-label { font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: var(--pink); }
+        .sec-est   { font-size: 10px; letter-spacing: .16em; color: var(--teal); }
+
+        .sec-title-row {
+            display: grid; grid-template-columns: 1fr 1fr;
+            align-items: start; gap: 40px; margin-bottom: 40px;
+        }
+        .sec-big {font-family: "femmefatale", sans-serif; font-size: clamp(60px,9vw,130px); text-transform: uppercase; line-height: .88; letter-spacing: -.02em; color: var(--pink); white-space: nowrap; }
+        .sec-right { display: flex; flex-direction: column; gap: 20px; padding-top: 4px; }
+        .sec-count { font-family:var(--font-cond) ;font-size: clamp(38px,2vw,72px); line-height: .9; letter-spacing: -.02em; }
+        .sec-count sup { font-size: .32em; font-weight: 400; color: var(--teal); vertical-align: super; }
+        
+
+        .filters { display: flex; gap: 28px; flex-wrap: wrap; }
+        .filter-btn { background: none; border: none; color: var(--fg); font-family: var(--font); font-size: 18px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; cursor: pointer; opacity: .35; padding: 0; transition: opacity .2s, color .2s; }
+        .filter-btn.active { opacity: 1; color: var(--pink); }
+        .filter-btn:hover  { opacity: .8; }
+
+        /* ── GRILLE VIDÉOS ── */
+        .video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+        .v-card {
+            position: relative; overflow: hidden; cursor: pointer;
+            aspect-ratio: 16/9; background: #111;
+        }
+        .v-thumb {
+            position: absolute; inset: 0;
+            background-size: cover; background-position: center;
+            transition: transform .65s ease;
+        }
+        .v-card:hover .v-thumb { transform: scale(1.04); }
+
+        .v-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,.85) 0%, rgba(0,0,0,.1) 60%);
+            transition: background .4s;
+        }
+        .v-card:hover .v-overlay { background: linear-gradient(to top, rgba(0,0,0,.6) 0%, rgba(0,0,0,.2) 100%); }
+
+        /* bordure rose au survol */
+        .v-card::before {
+            content: ''; position: absolute; inset: 0; z-index: 3;
+            border: 1px solid transparent; transition: border-color .3s;
+        }
+        .v-card:hover::before { border-color: var(--pink); }
+
+        /* bouton play */
+        .v-play {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%,-50%) scale(.8);
+            width: 60px; height: 60px;
+            border: 1px solid rgba(255,255,255,.7); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; transition: opacity .3s, transform .3s; z-index: 3;
+            pointer-events: none;
+        }
+        .v-play::after {
+            content: ''; width: 0; height: 0; border-style: solid;
+            border-width: 9px 0 9px 17px;
+            border-color: transparent transparent transparent #fff;
+            margin-left: 5px;
+        }
+        .v-card:hover .v-play { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+
+        .v-info { position: absolute; bottom: 0; left: 0; right: 0; padding: 0 18px 16px; color:var(--teal); z-index: 2; }
+        .v-info-divider { border: none; border-top: 1px solid rgba(255,31,138,.35); margin-bottom: 10px; }
+        .v-info-row { display: flex; justify-content: space-between; align-items: baseline; line-height: 1.35; }
+        .v-title  { font-family: var(--font); letter-spacing: .1em; }
+        .v-title sup { font-size: 8px; color: var(--teal); }
+        .v-cat    { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--teal); }
+        .v-client { font-family: var(--font); letter-spacing: .1em; }
+        .v-client sup { font-size: 8px; color: var(--pink); font-weight: 400; }
+        .v-dur    { font-size: 11px; letter-spacing: .1em; opacity: .6; }
+
+        .v-card[data-hidden] { display: none; }
+
+        /* ── LIGHTBOX VIMEO ── */
+        .modal {
+            position: fixed; inset: 0; z-index: 8000;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none;
+            transition: opacity .3s;
+        }
+        .modal.active { opacity: 1; pointer-events: all; }
+
+        .modal-backdrop {
+            position: absolute; inset: 0;
+            background: rgba(0,0,0,0.93);
+            backdrop-filter: blur(10px);
+        }
+        .modal-box {
+            position: relative; z-index: 1;
+            width: min(680px, 70vw);
+        }
+        .modal-close {
+            position: absolute; top: -38px; right: 0;
+            background: none; border: none; color: var(--fg);
+            font-size: 28px; line-height: 1; cursor: pointer;
+            opacity: .55; transition: opacity .2s, color .2s; font-family: var(--font);
+        }
+        .modal-close:hover { opacity: 1; color: var(--pink); }
+
+        .modal-player {
+            position: relative; aspect-ratio: 16/9; background: #000;
+        }
+        .modal-player iframe {
+            position: absolute; inset: 0; width: 100%; height: 100%; border: none;
+        }
+
+        .modal-info {
+            border-top: 1px solid var(--border);
+            padding: 14px 4px 0;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .modal-title  { font-family: var(--font-cond); font-weight: 700; font-size: 16px; letter-spacing: .1em; text-transform: uppercase; color: var(--pink); }
+        .modal-client { font-family: var(--font-cond); font-weight: 700; font-size: 14px; letter-spacing: .08em; text-transform: uppercase; }
+        .modal-right  { display: flex; gap: 24px; align-items: center; }
+        .modal-cat    { font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--teal); }
+        .modal-dur    { font-size: 11px; letter-spacing: .1em; opacity: .6; }
+
+        /* ── ORBE DÉCORATIF ── */
+        .orb { position: absolute; border-radius: 50%; pointer-events: none; background: radial-gradient(circle,#FF1F8A 0%,#8a1a8a 45%,#00C4B4 75%,transparent 100%); filter: blur(55px); opacity: .12; }
+
+        /* ── ÉDITIONS ── */
+        #editions { border-top: 1px solid var(--border); padding: 76px 36px 80px; position: relative; overflow: hidden; }
+        #editions .orb { width: 500px; height: 500px; bottom: -200px; left: -100px; }
+
+        .ed-title-row { display: grid; grid-template-columns: 1fr 1fr; align-items: start; gap: 40px; margin-bottom: 40px; }
+        .sec-big-white { font-family: "femmefatale", var(--font-cond); font-weight: 900; font-size: clamp(60px,9vw,130px); text-transform: uppercase; line-height: .88; letter-spacing: -.02em; }
+        .sec-right-col { display: flex; flex-direction: column; gap: 22px; padding-top: 4px; }
+        .sec-right-col p { font-size: 12px; line-height: 1.75; max-width: 320px; font-weight: 300; color: var(--muted); }
+
+        .editions-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 2px; }
+        .ed-card { border: 1px solid var(--border); padding: 28px 20px 24px; cursor: pointer; transition: background .3s; position: relative; overflow: hidden; }
+        .ed-card:hover { background: rgba(255,31,138,.06); }
+        .ed-card.current { border-color: var(--teal); }
+        .ed-year { font-family: var(--font-cond); font-weight: 900; font-size: 56px; line-height: 1; letter-spacing: -.03em; color: var(--pink); opacity: .12; transition: opacity .35s; }
+        .ed-card:hover .ed-year { opacity: .8; }
+        .ed-card.current .ed-year { opacity: 1; color: var(--teal); }
+        .ed-meta { margin-top: 14px; }
+        .ed-num   { font-size: 10px; letter-spacing: .2em; text-transform: uppercase; opacity: .45; margin-bottom: 6px; }
+        .ed-films { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; opacity: .5; }
+        .ed-badge { position: absolute; top: 12px; right: 12px; font-size: 8px; letter-spacing: .15em; text-transform: uppercase; border: 1px solid var(--teal); padding: 3px 7px; color: var(--teal); }
+
+        /* ── RÉALISATEURS ── */
+        #directors { border-top: 1px solid var(--border); padding: 76px 36px 80px; }
+        #directors .sec-header { border-top: none; }
+        .dir-list { margin-top: 44px; }
+        .dir-row { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; border-bottom: 1px solid var(--border); cursor: pointer; transition: padding-left .3s; }
+        .dir-row:hover { padding-left: 14px; }
+        .dir-name { font-family: var(--font-cond); font-weight: 700; font-size: 22px; letter-spacing: .08em; text-transform: uppercase; transition: color .2s; text-decoration: none; color: inherit; }
+        .dir-row:hover .dir-name { color: var(--pink); }
+        .dir-right { display: flex; gap: 36px; align-items: center; }
+        .dir-stat  { font-size: 11px; letter-spacing: .15em; text-transform: uppercase; opacity: .45; }
+        .dir-arrow { color: var(--teal); opacity: .4; font-size: 16px; transition: opacity .2s, transform .2s; }
+        .dir-row:hover .dir-arrow { opacity: 1; transform: translateX(4px); }
+
+        /* ── CONTACT ── */
+        #contact { border-top: 1px solid var(--border); padding: 76px 36px; }
+        #contact .sec-header { border-top: none; }
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 44px; }
+        .contact-big { font-family: "femmefatale", var(--font-cond); font-weight: 900; font-size: clamp(48px,7vw,100px); text-transform: uppercase; line-height: .9; letter-spacing: -.02em; color: var(--pink); }
+        .contact-right { display: flex; flex-direction: column; justify-content: flex-end; gap: 28px; }
+        .contact-block { display: flex; flex-direction: column; gap: 6px; }
+        .contact-block label { font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--teal); }
+        .contact-block a { color: var(--fg); text-decoration: none; font-size: 14px; letter-spacing: .05em; opacity: .8; transition: color .2s; }
+        .contact-block a:hover { color: var(--pink); opacity: 1; }
+
+        /* ── FOOTER ── */
+        footer { border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; padding: 24px 36px; }
+        .footer-logo { font-family: var(--font-cond); font-weight: 700; font-size: 12px; letter-spacing: .18em; color: var(--pink); }
+        .footer-copy { font-size: 10px; opacity: .3; letter-spacing: .1em; }
+
+        ::-webkit-scrollbar { width: 2px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--pink); }
+
+        @media (max-width: 900px) {
+            nav, #films, #editions, #directors, #contact, footer { padding-left: 20px; padding-right: 20px; }
+            .nav-links { gap: 20px; }
+            .video-grid { grid-template-columns: 1fr; }
+            .sec-title-row, .ed-title-row, .contact-grid { grid-template-columns: 1fr; }
+            .editions-grid { grid-template-columns: repeat(4,1fr); }
+        }
+        @media (max-width: 600px) {
+            .nav-links { gap: 14px; }
+            .editions-grid { grid-template-columns: repeat(2,1fr); }
+            .sec-big { text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ════════ LIGHTBOX ════════ -->
+<div class="modal" id="modal" role="dialog" aria-modal="true">
+    <div class="modal-backdrop" id="modalBackdrop"></div>
+    <div class="modal-box">
+        <button class="modal-close" id="modalClose" aria-label="Fermer">×</button>
+        <div class="modal-player">
+            <iframe id="vimeoIframe"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowfullscreen>
+            </iframe>
+        </div>
+        <div class="modal-info">
+            <div>
+                <div class="modal-title"  id="modalTitle"></div>
+                <div class="modal-client" id="modalClient"></div>
+            </div>
+            <div class="modal-right">
+                <span class="modal-cat" id="modalCat"></span>
+                <span class="modal-dur" id="modalDur"></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ════════ NAV ════════ -->
+<nav id="mainNav">
+    <div class="nav-logo">3/6 Flip</div>
+    <div class="nav-links">
+         <a href="#films">FILMS</a> 
+        <a href="#directors">ORGA </a>
+        <a href="#contact">CONTACT</a>
+    </div>
+</nav>
+
+<!-- ════════ FILMS ════════
+     Remplace chaque data-youtube-id par l'ID de ta vidéo YouTube.
+     L'ID se trouve dans l'URL : youtube.com/watch?v=XXXX → id="XXXX"
+     Ex: https://www.youtube.com/watch?v=dQw4w9WgXcQ → data-youtube-id="dQw4w9WgXcQ"
+     La miniature est chargée automatiquement, sans clé API.
+════════════════════════════ -->
+<section id="films">
+    <div class="sec-title-row">
+        <h1 class="sec-big" style="text-transform: none;">3 6 Flip</h1>
+        <div class="sec-right">
+            <div class="sec-count" id="selectionTitle">Tous les films</div>
+            <div class="filters">
+                <button class="filter-btn active" data-filter="all"  data-label="Tous les films"                              data-count="">Tous</button>
+                <button class="filter-btn"        data-filter="2023" data-label="L'amour est dans le pré" data-count="">2023</button>
+                <button class="filter-btn"        data-filter="2022" data-label="Sport"                   data-count="">2022</button>
+                <button class="filter-btn"        data-filter="2021" data-label="La plante des ténèbres"  data-count="">2021</button>
+                <button class="filter-btn"        data-filter="2020" data-label="Énigme"                  data-count="">2020</button>
+            </div>
+            
+        </div> 
+    </div>
+
+    <div class="video-grid">
+
+        <!-- ↓ Remplace data-vimeo-id par ton ID Vimeo réel ↓ -->
+        <div class="v-card" data-category="competition" data-youtube-id="rc94TH4VONI"
+             data-title="EN HAUT, eau, EN BAS, eau" data-client="Sarah Munro, Pélagie Papillon" data-cat="2020" data-dur="00:12:35">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#007a78,#4a1880,#FF1F8A)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">EN HAUT, eau, EN BAS, eau</span><span class="v-cat">2020</span></div>
+                <div class="v-info-row"><span class="v-client">Sarah Munro, Pélagie Papillon</span><span class="v-dur">00:12:35</span></div>
+            </div>
+        </div>
+
+        <div class="v-card" data-category="court" data-youtube-id="HkiAd8D6grk"
+             data-title="Un amour éternel" data-client="Aurélia Foucher" data-cat="2023" data-dur="00:04:55">
+            <div class="v-thumb" style="background-image:linear-gradient(135deg,#1a0838,#6b186b,#FF1F8A)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">Un amour éternel</span><span class="v-cat">2023</span></div>
+                <div class="v-info-row"><span class="v-client">Aurélia Foucher</span><span class="v-dur">00:04:55</span></div>
+            </div>
+        </div>
+
+        <div class="v-card" data-category="doc" data-youtube-id="NWc9bqh42aE"
+             data-title="Underground trip riddling landscapes" data-client="Charly Caillaux, Tristan Lughinbul, Joachim" data-cat="2020" data-dur="00:12:46">
+            <div class="v-thumb" style="background-image:linear-gradient(135deg,#003848,#005a60,#00443a)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">Underground trip riddling landscapes</span><span class="v-cat">2020</span></div>
+                <div class="v-info-row"><span class="v-client">Charly Caillaux, Tristan Lughinbul, Joachim</span><span class="v-dur">00:12:46</span></div>
+            </div>
+        </div>
+
+        <div class="v-card" data-category="competition" data-youtube-id="70v8qHGZKfM"
+             data-title="Inside Enigm Davis" data-client="Charly Caillaux, Ali Deroche" data-cat="2020" data-dur="00:09:07">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#00a098,#4a2080,#8a104a)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">Inside Enigm Davis</span><span class="v-cat">2020</span></div>
+                <div class="v-info-row"><span class="v-client">Charly Caillaux, Ali Deroche</span><span class="v-dur">00:09:07</span></div>
+            </div>
+        </div>
+
+        <div class="v-card" data-category="court" data-youtube-id="25fqPf8dUyY"
+             data-title="VIANDE" data-client="Ali Deroche" data-cat="2021" data-dur="00:01:14">
+            <div class="v-thumb" style="background-image:linear-gradient(135deg,#1a0050,#4a10a0,#FF1F8A)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">VIANDE</span><span class="v-cat">2021</span></div>
+                <div class="v-info-row"><span class="v-client">Ali Deroche</span><span class="v-dur">00:01:14</span></div>
+            </div>
+        </div>
+
+        <div class="v-card" data-category="doc" data-youtube-id="e4odURy_a1A"
+             data-title="SPACED OUT" data-client="Gigi Antinori, Luc" data-cat="2021" data-dur="00:03:46">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">SPACED OUT</span><span class="v-cat">2021</span></div>
+                <div class="v-info-row"><span class="v-client">Gigi Antinori, Luc</span><span class="v-dur">00:03:46</span></div>
+            </div>
+        </div>
+
+        <div class="v-card" data-category="competition" data-youtube-id="AoVi3O9ANd4"
+             data-title="CHLOÉ FILM" data-client="YChloé Lafolie-joly" data-cat="2021" data-dur="00:06:36">
+            <div class="v-thumb" style="background-image:linear-gradient(135deg,#380010,#8a0040,#FF1F8A)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">CHLOÉ FILM</span><span class="v-cat">2021</span></div>
+                <div class="v-info-row"><span class="v-client">Chloé Lafolie-joly</span><span class="v-dur">00:06:36</span></div>
+            </div>
+        </div>
+
+        <div class="v-card" data-category="court" data-youtube-id="fbJX9e2scdo"
+             data-title="SABOTAGE" data-client="Elsa Dunand, Julie Pelissier" data-cat="2021" data-dur="00:03:03">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#005858,#003030,#001818)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">SABOTAGE</span><span class="v-cat">2021</span></div>
+                <div class="v-info-row"><span class="v-client">Elsa Dunand, Julie Pelissier</span><span class="v-dur">00:03:03</span></div>
+            </div>
+        </div>
+
+        <div class="v-card" data-category="doc" data-youtube-id="mOci0nRIdEM"
+             data-title="SEARCH FOR" data-client="NORA BAUER" data-cat="2023" data-dur="00:06:02">
+            <div class="v-thumb" style="background-image:linear-gradient(135deg,#003058,#001a38,#00100a)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">SEARCH FOR</span><span class="v-cat">2023</span></div>
+                <div class="v-info-row"><span class="v-client">Inconnu.e</span><span class="v-dur">00:06:02</span></div>
+            </div>
+        </div>
+
+        <div class="v-card" data-category="competition" data-youtube-id="wnzSsoVaKgE"
+             data-title="0666812420" data-client="Joachim" data-cat="2021" data-dur="00:09:12">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#008888,#3a1870,#FF1F8A)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">0666812420</span><span class="v-cat">2021</span></div>
+                <div class="v-info-row"><span class="v-client">Joachim</span><span class="v-dur">00:09:12</span></div>
+            </div>
+        </div>
+
+        <div class="v-card" data-category="competition" data-youtube-id="ve9G5hF6f9o"
+             data-title="NABATEDALAM" data-client="Inconnu.e" data-cat="2021" data-dur="00:03:01">
+            <div class="v-thumb" style="background-image:linear-gradient(135deg,#300028,#7a0060,#FF1F8A)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">NABATEDALAM</span><span class="v-cat">2021</span></div>
+                <div class="v-info-row"><span class="v-client">Inconnu.e</span><span class="v-dur">00:03:01</span></div>
+            </div>
+        </div>
+
+        <div class="v-card" data-category="court" data-youtube-id="bVwwTw6_j6o"
+             data-title="LA NUIT EST JEUNE" data-client="ordi Honoré" data-cat="2021" data-dur="00:09:03">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#006068,#2a1868,#180030)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">LA NUIT EST JEUNE</span><span class="v-cat">2021</span></div>
+                <div class="v-info-row"><span class="v-client">Jordi Honoré </span><span class="v-dur">00:09:03</span></div>
+            </div>
+        </div>
+
+   <div class="v-card" data-category="court" data-youtube-id="k-ep_-35u74"
+             data-title="LE VOLEUR DE GSM" data-client="Julien Kaczan" data-cat="2021" data-dur="00:04:30">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#006068,#2a1868,#180030)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">LE VOLEUR DE GSM</span><span class="v-cat">2021</span></div>
+                <div class="v-info-row"><span class="v-client">Julien Kaczan</span><span class="v-dur">00:04:30</span></div>
+            </div>
+        </div>
+
+           <div class="v-card" data-category="court" data-youtube-id="v480mYTQx4g"
+             data-title="LA BELLE VITRÉE" data-client="Jeanne Piatier, Léo Carésio" data-cat="2021" data-dur="00:07:09">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#006068,#2a1868,#180030)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">LA BELLE VITRÉE</span><span class="v-cat">2021</span></div>
+                <div class="v-info-row"><span class="v-client">Jeanne Piatier, Léo Carésio</span><span class="v-dur">00:07:09</span></div>
+            </div>
+        </div>
+           <div class="v-card" data-category="court" data-youtube-id="3T_6TTTrXoE"
+             data-title="NUIT D'AILLEURS" data-client="Julia Solans, inconnu.e" data-cat="2021" data-dur="00:04:32">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#006068,#2a1868,#180030)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">NUIT D'AILLEURS</span><span class="v-cat">2021</span></div>
+                <div class="v-info-row"><span class="v-client">Julia Solans, inconnu.e </span><span class="v-dur">00:04:32</span></div>
+            </div>
+        </div>
+
+           <div class="v-card" data-category="court" data-youtube-id="I_FQzKEKLfk"
+             data-title="L'ÉNIGME DU SERPENT DORÉ" data-client="Inconnu.e" data-cat="2020" data-dur="00:03:48">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#006068,#2a1868,#180030)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">L'ÉNIGME DU SERPENT DORÉ</span><span class="v-cat">2020</span></div>
+                <div class="v-info-row"><span class="v-client">Inconnu.e</span><span class="v-dur">00:03:48</span></div>
+            </div>
+        </div>
+
+         <div class="v-card" data-category="doc" data-youtube-id="KTxmuB7smAY"
+             data-title="VÉLOTYPIE" data-client="Lucie Trichet" data-cat="2022" data-dur="00:04:33">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">VÉLOTYPIE</span><span class="v-cat">2022</span></div>
+                <div class="v-info-row"><span class="v-client">Lucette</span><span class="v-dur">00:04:33</span></div>
+            </div>
+        </div>
+
+         <div class="v-card" data-category="doc" data-youtube-id="093ZO65FLBY"
+             data-title="LES FRANÇAIS.ES ET LE SPORT" data-client="urélia Foucher, Julien Kaczan" data-cat="2022" data-dur="00:05:40">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">LES FRANÇAIS.ES ET LE SPORT</span><span class="v-cat">2022</span></div>
+                <div class="v-info-row"><span class="v-client">Aurélia, Julien</span><span class="v-dur">00:05:40</span></div>
+            </div>
+        </div>
+
+         <div class="v-card" data-category="doc" data-youtube-id="uJIruahjXQM"
+             data-title="SPORT" data-client="Camon, Erwan, Lorinne, Eric, Ali, Carmen et Léo" data-cat="2021" data-dur="00:13:04">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">SPORT</span><span class="v-cat">2022</span></div>
+                <div class="v-info-row"><span class="v-client">Camon, Erwan, Lorinne, Eric, Ali, Carmen et Léo</span><span class="v-dur">00:13:04</span></div>
+            </div>
+        </div>
+
+         <div class="v-card" data-category="doc" data-youtube-id="UGo7O6F1Bo8"
+             data-title="PUB VOLVO" data-client="Charly Caillaux, Gigi Antinori" data-cat="2021" data-dur="00:01:14">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">PUB VOLVO</span><span class="v-cat">2021</span></div>
+                <div class="v-info-row"><span class="v-client">Charly, Gigi</span><span class="v-dur">00:01:14</span></div>
+            </div>
+        </div>
+
+         <div class="v-card" data-category="doc" data-youtube-id="2h9yEOCaqRU"
+             data-title="PUB JOUBIÈRE" data-client="Charly Caillaux, Gigi Antinori" data-cat="2022" data-dur="00:01:18">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">PUB JOUBIÈRE</span><span class="v-cat">2022</span></div>
+                <div class="v-info-row"><span class="v-client">Charly, Gigi</span><span class="v-dur">00:01:18</span></div>
+            </div>
+        </div>
+
+         <div class="v-card" data-category="doc" data-youtube-id="aNpRpeX9yfw"
+             data-title="PUB MOZZA" data-client="Charly Caillaux, Gigi Antinori" data-cat="2022" data-dur="00:01:14">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">PUB MOZZA</span><span class="v-cat">2022</span></div>
+                <div class="v-info-row"><span class="v-client">Charly, Gigi</span><span class="v-dur">00:01:14</span></div>
+            </div>
+        </div>
+
+             <div class="v-card" data-category="doc" data-youtube-id="IBmMe31ckYg"
+             data-title="PUB C15" data-client="Charly Caillaux, Gigi Antinori" data-cat="2022" data-dur="00:01:11">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">PUB C15</span><span class="v-cat">2022</span></div>
+                <div class="v-info-row"><span class="v-client">Charly Caillaux, Gigi Antinori</span><span class="v-dur">00:01:11</span></div>
+            </div>
+        </div>
+
+         <div class="v-card" data-category="doc" data-youtube-id="4TuSTugvBa4"
+             data-title="FAUT QUE JE ME BOUGE" data-client="Chloé Lafolie-joly, Sarah Munro, Julia Solans" data-cat="2022" data-dur="00:06:05">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">FAUT QUE JE ME BOUGE</span><span class="v-cat">2022</span></div>
+                <div class="v-info-row"><span class="v-client">Chloé Lafolie-joly, Sarah Munro, Julia Solans</span><span class="v-dur">00:06:05</span></div>
+            </div>
+        </div>
+
+                <div class="v-card" data-category="doc" data-youtube-id="Y5oBHATLKc0"
+             data-title="LES ÂMES SŒURS" data-client="Ali Deroche, Tiddles" data-cat="2022" data-dur="00:02:03">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">LES ÂMES SŒURS</span><span class="v-cat">2022</span></div>
+                <div class="v-info-row"><span class="v-client">Ali, Tiddles</span><span class="v-dur">00:02:03</span></div>
+            </div>
+        </div>
+
+                <div class="v-card" data-category="doc" data-youtube-id="GoG0iB5vR-g"
+             data-title="LES MIFOURS FILMÉES DE PRÈS" data-client="Inconnu.e" data-cat="2022" data-dur="00:07:31">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">LAS MIFOURS FILMÉES DE PRÈS</span><span class="v-cat">2022</span></div>
+                <div class="v-info-row"><span class="v-client">Sarah M, Luke, Nipo</span><span class="v-dur">00:07:31</span></div>
+            </div>
+        </div>
+
+                <div class="v-card" data-category="doc" data-youtube-id="IBmMe31ckYg"
+             data-title="PUB C15" data-client="Charly Caillaux, Gigi Antinori" data-cat="2022" data-dur="00:01:11">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">PUB C15</span><span class="v-cat">2022</span></div>
+                <div class="v-info-row"><span class="v-client">Charly, Gigi</span><span class="v-dur">00:01:11</span></div>
+            </div>
+        </div>
+
+                <div class="v-card" data-category="doc" data-youtube-id="IBmMe31ckYg"
+             data-title="PUB C15" data-client="Charly Caillaux, Gigi Antinori" data-cat="2022" data-dur="00:01:11">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">PUB C15</span><span class="v-cat">2022</span></div>
+                <div class="v-info-row"><span class="v-client">Charly, Gigi</span><span class="v-dur">00:01:11</span></div>
+            </div>
+        </div>
+
+                <div class="v-card" data-category="doc" data-youtube-id="IBmMe31ckYg"
+             data-title="PUB C15" data-client="Charly Caillaux, Gigi Antinori" data-cat="2022" data-dur="00:01:11">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">PUB C15</span><span class="v-cat">2022</span></div>
+                <div class="v-info-row"><span class="v-client">Charly, Gigi</span><span class="v-dur">00:01:11</span></div>
+            </div>
+        </div>
+
+                <div class="v-card" data-category="doc" data-youtube-id="IBmMe31ckYg"
+             data-title="PUB C15" data-client="Charly Caillaux, Gigi Antinori" data-cat="2022" data-dur="00:01:11">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">PUB C15</span><span class="v-cat">2022</span></div>
+                <div class="v-info-row"><span class="v-client">Charly Caillaux, Gigi Antinori</span><span class="v-dur">00:01:11</span></div>
+            </div>
+        </div>
+
+                <div class="v-card" data-category="doc" data-youtube-id="IBmMe31ckYg"
+             data-title="PUB C15" data-client="Charly Caillaux, Gigi Antinori" data-cat="2022" data-dur="00:01:11">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">PUB C15</span><span class="v-cat">2022</span></div>
+                <div class="v-info-row"><span class="v-client">Charly, Gigi</span><span class="v-dur">00:01:11</span></div>
+            </div>
+        </div>
+
+                <div class="v-card" data-category="doc" data-youtube-id="IBmMe31ckYg"
+             data-title="PUB C15" data-client="Charly Caillaux, Gigi Antinori" data-cat="2022" data-dur="00:01:11">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">PUB C15</span><span class="v-cat">2022</span></div>
+                <div class="v-info-row"><span class="v-client">Charly Caillaux, Gigi Antinori</span><span class="v-dur">00:01:11</span></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ════════ RÉALISATEURS ════════ -->
+<section id="directors">
+    <div class="sec-header"><span class="sec-label">Les gens qui vivent à Laval</span></div>
+    <div class="ed-title-row">
+        <h2 class="sec-big-white">Orga</h2>
+    </div>
+    <div class="dir-list">
+        <!-- Remplace href="#" par l'URL du site de chaque orga -->
+        <div class="dir-row"><a class="dir-name" href="https://rassine.bandcamp.com/" target="_blank">Sarah Munro</a><div class="dir-right"><span class="dir-stat">Bandcamp</span><span class="dir-arrow">→</span></div></div>
+        <div class="dir-row"><a class="dir-name" href="#" target="_blank">Charly Caillaux</a><div class="dir-right"><span class="dir-stat">Insta</span><span class="dir-arrow">→</span></div></div>
+        <div class="dir-row"><a class="dir-name" href="https://www.leboncoin.fr/" target="_blank">Julia Solans</a><div class="dir-right"><span class="dir-stat">Le bon Coin</span><span class="dir-arrow">→</span></div></div>
+        <div class="dir-row"><a class="dir-name" href="https://www.youtube.com/watch?v=Y5oBHATLKc0&t=1s" target="_blank">Ali Deroche</a><div class="dir-right"><span class="dir-stat">Tiddles</span><span class="dir-arrow">→</span></div></div>
+    </div>
+</section>
+
+<!-- ════════ CONTACT ════════ -->
+<section id="contact">
+    <div class="sec-header"><span class="sec-label">Laguépie</span><span class="sec-est">[ 3/6 FLIP ]</span></div>
+    <div class="contact-grid">
+        <h2 class="contact-big">CONTACT</h2>
+        <div class="contact-right">
+            <div class="contact-block"><label>Adresse</label>Notre Dame de Laval, 12270 Saint-André de Najac</div>
+            <div class="contact-block"><label>Email</label><a href="mailto:presse@lumiere-festival.com">charlycaillaux@gmail.com</a></div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="footer-copy">© 2026 3/6 FLIP. @aurasan_vn </div>
+</footer>
+
+<script>
+/* ══════════════════════════════════════════════════════
+   YOUTUBE — miniatures automatiques + lightbox
+   Pour chaque carte, remplace data-youtube-id="VOTRE_ID"
+   par l'ID de ta vidéo YouTube (les 11 caractères après ?v=)
+   Ex: youtube.com/watch?v=dQw4w9WgXcQ → data-youtube-id="dQw4w9WgXcQ"
+
+   Miniatures chargées SANS clé API :
+     maxresdefault.jpg → 1280×720 HD (tentative en premier)
+     hqdefault.jpg     → 480×360   (fallback automatique)
+══════════════════════════════════════════════════════ */
+
+// ── Chargement des miniatures YouTube (sans API, sans clé) ──
+document.querySelectorAll('.v-card[data-youtube-id]').forEach(card => {
+    const id = card.dataset.youtubeId;
+    if (!id || id.startsWith('VOTRE')) return; // ignore les placeholders
+
+    const thumb = card.querySelector('.v-thumb');
+    const img   = new Image();
+    img.onload = () => {
+        // YouTube renvoie une image 120×90 (les 3 points gris) quand maxresdefault n'existe pas
+        // → on détecte ce placeholder par ses dimensions et on bascule sur hqdefault
+        if (img.naturalWidth === 120 && img.naturalHeight === 90) {
+            thumb.style.backgroundImage = `url('https://img.youtube.com/vi/${id}/hqdefault.jpg')`;
+        } else {
+            thumb.style.backgroundImage = `url('https://img.youtube.com/vi/${id}/maxresdefault.jpg')`;
+        }
+    };
+    img.onerror = () => { thumb.style.backgroundImage = `url('https://img.youtube.com/vi/${id}/hqdefault.jpg')`; };
+    img.src = `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
+});
+
+// ── Lightbox ──
+const modal        = document.getElementById('modal');
+const vimeoIframe  = document.getElementById('vimeoIframe');
+const modalTitle   = document.getElementById('modalTitle');
+const modalClient  = document.getElementById('modalClient');
+const modalCat     = document.getElementById('modalCat');
+const modalDur     = document.getElementById('modalDur');
+
+function openModal(card) {
+    const id = card.dataset.youtubeId;
+    if (!id || id.startsWith('VOTRE')) return;
+
+    // embed YouTube : autoplay, sans suggestions hors chaîne, branding réduit
+    vimeoIframe.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&modestbranding=1`;
+
+    modalTitle.textContent  = card.dataset.title  || '';
+    modalClient.textContent = card.dataset.client || '';
+    modalCat.textContent    = card.dataset.cat    || '';
+    modalDur.textContent    = card.dataset.dur    || '';
+
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+    modal.classList.remove('active');
+    vimeoIframe.src = '';           // arrête la lecture
+    document.body.style.overflow = '';
+}
+
+document.querySelectorAll('.v-card').forEach(card => {
+    card.addEventListener('click', () => openModal(card));
+});
+document.getElementById('modalClose').addEventListener('click', closeModal);
+document.getElementById('modalBackdrop').addEventListener('click', closeModal);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// ── Smooth scroll ──
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+        e.preventDefault();
+        document.querySelector(a.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth' });
+    });
+});
+
+// ── Nav opaque au scroll ──
+const navEl = document.getElementById('mainNav');
+window.addEventListener('scroll', () => {
+    const s = window.scrollY > 20;
+    navEl.style.background     = s ? '#242424' : '#242424';
+    navEl.style.backdropFilter = 'none';
+    navEl.style.borderBottom   = s ? '1px solid rgba(255,31,138,0.15)' : 'none';
+});
+
+// ── Filtres ──
+const filterBtns = document.querySelectorAll('.filter-btn');
+const cards      = document.querySelectorAll('.v-card');
+const selTitle   = document.getElementById('selectionTitle');
+
+filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const f = btn.dataset.filter;
+        // filtre sur data-cat qui contient l'année de chaque vidéo
+        cards.forEach(c => {
+            if (f === 'all' || c.dataset.cat === f) c.removeAttribute('data-hidden');
+            else c.setAttribute('data-hidden', '');
+        });
+        // compte les vidéos visibles pour afficher le bon chiffre
+        const visible = [...cards].filter(c => !c.hasAttribute('data-hidden')).length;
+        selTitle.textContent = btn.dataset.label;
+    });
+});
+
+// ── Scroll-reveal ──
+const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+        if (e.isIntersecting) { e.target.style.opacity = '1'; e.target.style.transform = 'translateY(0)'; }
+    });
+}, { threshold: 0.06 });
+
+document.querySelectorAll('.v-card, .ed-card, .dir-row').forEach(el => {
+    el.style.opacity    = '0';
+    el.style.transform  = 'translateY(16px)';
+    el.style.transition = 'opacity .5s ease, transform .5s ease';
+    observer.observe(el);
+});
+</script>
+</body>
+</html>
