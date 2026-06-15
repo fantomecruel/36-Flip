@@ -167,7 +167,10 @@ nav {
 }
 .modal-box {
     position: relative; z-index: 1;
-    width: min(960px, 90vw);
+    /* largeur limitée aussi par la hauteur de l'écran :
+       on réserve ~150px (croix au-dessus + bandeau d'infos en dessous)
+       pour que toute la lightbox tienne, même sur un écran court (cf. souci PC) */
+    width: min(960px, 90vw, calc((100vh - 150px) * 16 / 9));
 }
 .modal-close {
     position: absolute; top: -38px; right: 0;
