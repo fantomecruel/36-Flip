@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# URL GitHub Pages
+Sitemap: https://auraevn.github.io/36-Flip/sitemap.xml

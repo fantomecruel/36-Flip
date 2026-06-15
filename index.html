@@ -3,15 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3/6 FLIP</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
 
-<!-- HELLO
+
+    <!-- HELLO
 /\ /\  /\      
 | V  \/  \---. 
  \_        /   
@@ -22,6 +16,66 @@
    ooooo       
   /     \
  -->
+
+
+
+    <!-- ══ SEO ══ -->
+    <title>3/6 FLIP</title>
+    <meta name="description" content="36 heures pour faire un film ? Le 3/6 FLIP est un festival de courts métrages amateur organisé chaque été ou presque à côté de Laguépie en Aveyron, mais on est pas là pour faire du cinéma">
+    <meta name="robots" content="index, follow">
+   
+    <link rel="canonical" href="https://auraevn.github.io/36-Flip/">
+    <link rel="icon" href="logo36.ico" type="image/x-icon">
+
+    <!-- ══ Réseaux sociaux (Open Graph) ══ -->
+    <meta property="og:type"        content="website">
+    <meta property="og:title"       content="3/6 FLIP - Festival de courts métrages">
+    <meta property="og:description" content="Festival de courts métrages amateur à Laguépie">
+    <meta property="og:url"         content="https://auraevn.github.io/36-Flip/">
+    <meta property="og:locale"      content="fr_FR">
+
+    <!-- ══ Données structurées (JSON-LD) — pour Google  ══ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Festival",
+      "name": "3/6 FLIP",
+      "description": "Festival de courts métrages amateur organisé chaque été à Laguépie en Aveyron.",
+      "url": "https://auraevn.github.io/36-Flip/",
+      "location": {
+        "@type": "Place",
+        "name": "Notre Dame de Laval",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Notre Dame de Laval",
+          "addressLocality": "Laguépie",
+          "postalCode": "12270",
+          "addressRegion": "Aveyron",
+          "addressCountry": "FR"
+        }
+      },
+      "organizer": [
+        { "@type": "Person", "name": "Sarah Munro",    "url": "https://rassine.bandcamp.com/" },
+        { "@type": "Person", "name": "Charly Caillaux","url": "https://www.instagram.com/charlycaillaux/" },
+        { "@type": "Person", "name": "Julia Solans" },
+        { "@type": "Person", "name": "Ali Deroche" }
+      ],
+      "subEvent": [
+        { "@type": "Event", "name": "3/6 FLIP 2020", "startDate": "2020-08-01", "description": "Thème : Énigme" },
+        { "@type": "Event", "name": "3/6 FLIP 2021", "startDate": "2021-08-01", "description": "Thème : La plante des ténèbres" },
+        { "@type": "Event", "name": "3/6 FLIP 2022", "startDate": "2022-08-01", "description": "Thème : Sport" },
+        { "@type": "Event", "name": "3/6 FLIP 2023", "startDate": "2023-08-01", "description": "Thème : L'amour est dans le pré" }
+      ]
+    }
+    </script>
+
+    <!-- ══ Polices ══ -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
 <!-- ════════ LIGHTBOX ════════ -->
 <div class="modal" id="modal" role="dialog" aria-modal="true">
@@ -57,14 +111,18 @@
     </div>
 </nav>
 
+<main>
+
 <!-- ════════ FILMS ════════ -->
-<section id="films">
+<section id="films" aria-label="Films du festival">
     <div class="sec-title-row">
         <h1 class="sec-big" style="text-transform: none;">3 6 Flip</h1>
         <div class="sec-right">
             <div class="sec-count" id="selectionTitle">Tous les films</div>
             <div class="filters">
                 <button class="filter-btn active" data-filter="all"  data-label="Tous les films">Tous</button>
+                <button class="filter-btn"        data-filter="2026" data-label="Dans la forêt">2026</button>
+                <button class="filter-btn"        data-filter="2024" data-label="L'Overworld">2024</button>
                 <button class="filter-btn"        data-filter="2023" data-label="L'amour est dans le pré">2023</button>
                 <button class="filter-btn"        data-filter="2022" data-label="Sport">2022</button>
                 <button class="filter-btn"        data-filter="2021" data-label="La plante des ténèbres">2021</button>
@@ -340,24 +398,443 @@
         </div>
 
         <div class="v-card" data-category="doc" data-youtube-id="Y5oBHATLKc0"
-             data-title="LES ÂMES SŒURS" data-client="Ali Deroche, Tiddles" data-cat="2022" data-dur="00:02:03">
+             data-title="LES ÂMES SŒURS" data-client="Ali, Tiddles" data-cat="2023" data-dur="00:02:03">
             <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
             <div class="v-overlay"></div><div class="v-play"></div>
             <div class="v-info">
                 <hr class="v-info-divider">
-                <div class="v-info-row"><span class="v-title">LES ÂMES SŒURS</span><span class="v-cat">2022</span></div>
+                <div class="v-info-row"><span class="v-title">LES ÂMES SŒURS</span><span class="v-cat">2023</span></div>
                 <div class="v-info-row"><span class="v-client">Ali, Tiddles</span><span class="v-dur">00:02:03</span></div>
             </div>
         </div>
 
         <div class="v-card" data-category="doc" data-youtube-id="GoG0iB5vR-g"
-             data-title="LES MIFOURS FILMÉES DE PRÈS" data-client="Inconnu.e" data-cat="2022" data-dur="00:07:31">
+             data-title="LAS MIFOURS FILMÉES DE PRÈS" data-client="Sarah M, Luke, Nipo" data-cat="2023" data-dur="00:07:31">
             <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
             <div class="v-overlay"></div><div class="v-play"></div>
             <div class="v-info">
                 <hr class="v-info-divider">
-                <div class="v-info-row"><span class="v-title">LES MIFOURS FILMÉES DE PRÈS</span><span class="v-cat">2022</span></div>
+                <div class="v-info-row"><span class="v-title">LAS MIFOURS FILMÉES DE PRÈS</span><span class="v-cat">2023</span></div>
                 <div class="v-info-row"><span class="v-client">Sarah M, Luke, Nipo</span><span class="v-dur">00:07:31</span></div>
+            </div>
+        </div>
+
+         <div class="v-card" data-category="doc" data-youtube-id="Qw1Lb8geUAo"
+             data-title="CŒUR DE BŒUF" data-client="Charly, Hugo, Gigi" data-cat="2023" data-dur="00:08:18">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">CŒUR DE BŒUF</span><span class="v-cat">2023</span></div>
+                <div class="v-info-row"><span class="v-client">Charly, Hugo, Gigi</span><span class="v-dur">00:08:18</span></div>
+            </div>
+        </div>
+
+         <div class="v-card" data-category="doc" data-youtube-id="3t02Txs-T5c"
+             data-title="LA MORT EST DANS LE PRÉ" data-client="Kash" data-cat="2023" data-dur="00:07:05">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">LA MORT EST DANS LE PRÉ</span><span class="v-cat">2023</span></div>
+                <div class="v-info-row"><span class="v-client">Kash</span><span class="v-dur">00:07:05</span></div>
+            </div>
+        </div>
+
+         <div class="v-card" data-category="doc" data-youtube-id="FLHNahja5R0"
+             data-title="HOT SPOT" data-client="Flo" data-cat="2023" data-dur="00:03:14">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">HOT SPOT</span><span class="v-cat">2023</span></div>
+                <div class="v-info-row"><span class="v-client">Flo</span><span class="v-dur">00:03:14</span></div>
+            </div>
+        </div>
+
+         <div class="v-card" data-category="doc" data-youtube-id="kHValdHDiZc"
+             data-title="L'AMOUR DANS LA BATAILLE" data-client="Eloa, Vito" data-cat="2023" data-dur="00:01:30">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">L'AMOUR DANS LA BATAILLE</span><span class="v-cat">2023</span></div>
+                <div class="v-info-row"><span class="v-client">Eloa, Vito</span><span class="v-dur">00:01:30</span></div>
+            </div>
+        </div>
+
+         <div class="v-card" data-category="doc" data-youtube-id="y1MUcEQwFsY"
+             data-title="JEAN MICHEL" data-client="Carmen" data-cat="2023" data-dur="00:02:41">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">JEAN MICHEL</span><span class="v-cat">2023</span></div>
+                <div class="v-info-row"><span class="v-client">Carmen</span><span class="v-dur">00:02:41</span></div>
+            </div>
+        </div>
+
+         <div class="v-card" data-category="doc" data-youtube-id="EXZZ-JE8fQI"
+             data-title="CARMEN" data-client="Carmen" data-cat="2024" data-dur="00:04:15">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">BIENVENU DANS L'OVERWORLD</span><span class="v-cat">2024</span></div>
+                <div class="v-info-row"><span class="v-client">Carmen</span><span class="v-dur">00:04:15</span></div>
+            </div>
+        </div>
+
+         <div class="v-card" data-category="doc" data-youtube-id="OB-rNHYD1ac"
+             data-title="UN FILM DE CUBES" data-client="Charles" data-cat="2024" data-dur="00:04:32">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">UN FILM DE CUBES</span><span class="v-cat">2024</span></div>
+                <div class="v-info-row"><span class="v-client">Charles</span><span class="v-dur">00:04:32</span></div>
+            </div>
+        </div>
+
+         <div class="v-card" data-category="doc" data-youtube-id="9F5pSGeqj5A"
+             data-title="OVERWORLDTV" data-client="Péla, Gigi" data-cat="2024" data-dur="00:08:48">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">OVERWORLDTV</span><span class="v-cat">2024</span></div>
+                <div class="v-info-row"><span class="v-client">Péla, Gigi</span><span class="v-dur">00:08:48</span></div>
+            </div>
+        </div>
+
+         <div class="v-card" data-category="doc" data-youtube-id="GOSjy3UMhkU"
+             data-title="SILEX ET NUAGES" data-client="Eloa" data-cat="2024" data-dur="00:01:49">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">SILEX ET NUAGES</span><span class="v-cat">2024</span></div>
+                <div class="v-info-row"><span class="v-client">Eloa</span><span class="v-dur">00:01:49</span></div>
+            </div>
+        </div>
+
+         <div class="v-card" data-category="doc" data-youtube-id="x0c1AzIgLic"
+             data-title="OVERROUERGUE" data-client="Lou, Tristan, Antonin, Sarah B" data-cat="2024" data-dur="00:12:28">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">OVERROUERGUE</span><span class="v-cat">2024</span></div>
+                <div class="v-info-row"><span class="v-client">Lou, Tristan, Antonin, Sarah B</span><span class="v-dur">00:12:28</span></div>
+            </div>
+        </div>
+
+         <div class="v-card" data-category="doc" data-youtube-id="OR82gg1CuqU"
+             data-title="OVERLUNCHWORLD" data-client="Vito, Flo" data-cat="2024" data-dur="00:02:29">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">OVERLUNCHWORLD</span><span class="v-cat">2024</span></div>
+                <div class="v-info-row"><span class="v-client">Vito, Flo</span><span class="v-dur">00:02:29</span></div>
+            </div>
+        </div>
+
+            <div class="v-card" data-category="doc" data-youtube-id="Brbjan5r1Mo"
+             data-title="OVER WHAT" data-client="Flo" data-cat="2024" data-dur="00:01:20">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">OVER WHAT</span><span class="v-cat">2024</span></div>
+                <div class="v-info-row"><span class="v-client">Flo</span><span class="v-dur">00:01:20</span></div>
+            </div>
+        </div>
+
+            <div class="v-card" data-category="doc" data-youtube-id="cyNaAHBYggw"
+             data-title="L'OVERWORLD" data-client="Charly, Sarah M" data-cat="2024" data-dur="00:04:52">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">L'OVERWORLD</span><span class="v-cat">2024</span></div>
+                <div class="v-info-row"><span class="v-client">Charly, Sarah M</span><span class="v-dur">00:04:52</span></div>
+            </div>
+        </div>
+
+            <div class="v-card" data-category="doc" data-youtube-id="-5Pmh1gvxIg"
+             data-title="L'ÉVASION" data-client="Julien" data-cat="2024" data-dur="00:05:40">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">L'ÉVASION</span><span class="v-cat">2024</span></div>
+                <div class="v-info-row"><span class="v-client">Julien</span><span class="v-dur">00:05:40</span></div>
+            </div>
+        </div>
+
+            <div class="v-card" data-category="doc" data-youtube-id="58x4asHqa_E"
+             data-title="HAHAHA" data-client="Julia, Barabra, Nil, Camon" data-cat="2024" data-dur="00:05:57">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">HAHAHA</span><span class="v-cat">2024</span></div>
+                <div class="v-info-row"><span class="v-client">Julia, Barbara, Nil, Camon</span><span class="v-dur">00:05:57</span></div>
+            </div>
+        </div>
+
+            <div class="v-card" data-category="doc" data-youtube-id="oD5E06SYco4"
+             data-title="GINGOVERWORLD" data-client="Nipo" data-cat="2024" data-dur="00:00:12">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">GINGOVERWORLD</span><span class="v-cat">2024</span></div>
+                <div class="v-info-row"><span class="v-client">Nipo</span><span class="v-dur">00:00:12</span></div>
+            </div>
+        </div>
+        
+              <div class="v-card" data-category="doc" data-youtube-id="-2HPrPmtdvs"
+             data-title="BIENVENUE DANS L'EXLOVERS WORLD" data-client="Jules, Antoine" data-cat="2024" data-dur="00:00:12">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">BIENVENUE DANS L'EXLOVERS WORLD</span><span class="v-cat">2024</span></div>
+                <div class="v-info-row"><span class="v-client">Jules, Antoine</span><span class="v-dur">00:00:12</span></div>
+            </div>
+        </div>
+
+              <div class="v-card" data-category="doc" data-youtube-id="J3giycqr4eE"
+             data-title="BA PRONTO" data-client="Jordi, Margaux" data-cat="2024" data-dur="00:05:36">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">BA PRONTO</span><span class="v-cat">2024</span></div>
+                <div class="v-info-row"><span class="v-client">Jordi, Margaux</span><span class="v-dur">00:05:36</span></div>
+            </div>
+        </div>
+
+                <div class="v-card" data-category="doc" data-youtube-id="_9dejcrcInw"
+             data-title="LOUIS DUCOUBET" data-client="Samuel, Vito" data-cat="2026" data-dur="00:02:00">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">LOUIS DUCOUBET</span><span class="v-cat">2026</span></div>
+                <div class="v-info-row"><span class="v-client">Samuel, Vito</span><span class="v-dur">00:02:00</span></div>
+            </div>
+        </div>
+
+                <div class="v-card" data-category="doc" data-youtube-id="sPaic_EX65E"
+             data-title="FINAL" data-client="Sara, Fifou" data-cat="2026" data-dur="00:04:47">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">FINAL</span><span class="v-cat">2026</span></div>
+                <div class="v-info-row"><span class="v-client">Sara, Fifou</span><span class="v-dur">00:04:47</span></div>
+            </div>
+        </div>
+
+                <div class="v-card" data-category="doc" data-youtube-id="9Z0n2IdcvP8"
+             data-title="MASSACRE À LA DÉBROU" data-client="Carole, Claire, Julia" data-cat="2026" data-dur="00:03:37">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">MASSACRE À LA DÉBROU</span><span class="v-cat">2026</span></div>
+                <div class="v-info-row"><span class="v-client">Carole, Claire, Julia</span><span class="v-dur">00:03:37</span></div>
+            </div>
+        </div>
+
+                <div class="v-card" data-category="doc" data-youtube-id="aL012Amyg-4"
+             data-title="LA BÊTE DU VIAUR" data-client="Eloa, Ayden" data-cat="2026" data-dur="00:07:03">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">LA BÊTE DU VIAUR</span><span class="v-cat">2026</span></div>
+                <div class="v-info-row"><span class="v-client">Eloa, Ayden</span><span class="v-dur">00:07:03</span></div>
+            </div>
+        </div>
+
+                <div class="v-card" data-category="doc" data-youtube-id="KTo1jS6leiY"
+             data-title="REQUEX" data-client="Julien, Aurélia, Pélagie" data-cat="2026" data-dur="00:02:59">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">REQUEX</span><span class="v-cat">2026</span></div>
+                <div class="v-info-row"><span class="v-client">Julien, Aurélia, Pélagie</span><span class="v-dur">00:02:59</span></div>
+            </div>
+        </div>
+
+                <div class="v-card" data-category="doc" data-youtube-id="MeqTYi3vZVk"
+             data-title="J'AI VU ELVIS DANS LA FORÊT" data-client="Carmen" data-cat="2026" data-dur="00:02:24">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">J'AI VU ELVIS DANS LA FORÊT</span><span class="v-cat">2026</span></div>
+                <div class="v-info-row"><span class="v-client">Carmen</span><span class="v-dur">00:02:24</span></div>
+            </div>
+        </div>
+
+                <div class="v-card" data-category="doc" data-youtube-id="nwx80gggmI4"
+             data-title="SALUT MA BELLE II" data-client="Camgirl" data-cat="2026" data-dur="00:01:57">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">SALUT MA BELLE II</span><span class="v-cat">2026</span></div>
+                <div class="v-info-row"><span class="v-client">Camgirl</span><span class="v-dur">00:01:57</span></div>
+            </div>
+        </div>
+
+                 <div class="v-card" data-category="doc" data-youtube-id="TqJ-VWFcgfc"
+             data-title="REQUEX 2 : LA MALÉDICTION" data-client="Julien, Aurélia, Pélagie" data-cat="2026" data-dur="00:01:27">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">REQUEX 2 : LA MALÉDICTION</span><span class="v-cat">2026</span></div>
+                <div class="v-info-row"><span class="v-client">Julien, Aurélia, Pélagie</span><span class="v-dur">00:01:27</span></div>
+            </div>
+        </div>
+
+                 <div class="v-card" data-category="doc" data-youtube-id="t8BCF2nzDYM"
+             data-title="CADAVRE DE BEAUF" data-client="Charly, Hugo" data-cat="2026" data-dur="00:08:11">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">CADAVRE DE BEAUF</span><span class="v-cat">2026</span></div>
+                <div class="v-info-row"><span class="v-client">Charly, Hugo</span><span class="v-dur">00:08:11</span></div>
+            </div>
+        </div>
+
+                 <div class="v-card" data-category="doc" data-youtube-id="3J0vaTGyW_k"
+             data-title="LOULOU DES BOIS" data-client="Jules" data-cat="2026" data-dur="00:04:29">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">LOULOU DES BOIS</span><span class="v-cat">2026</span></div>
+                <div class="v-info-row"><span class="v-client">Jules</span><span class="v-dur">00:04:29</span></div>
+            </div>
+        </div>
+
+                  <div class="v-card" data-category="doc" data-youtube-id="Pfl47bfLMOw"
+             data-title="BALADONS NOUS" data-client="Bonnie, Tahlia, Rania" data-cat="2026" data-dur="00:02:37">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">BALADONS NOUS</span><span class="v-cat">2026</span></div>
+                <div class="v-info-row"><span class="v-client">Bonnie, Tahlia, Rania</span><span class="v-dur">00:02:37</span></div>
+            </div>
+        </div>
+
+                  <div class="v-card" data-category="doc" data-youtube-id="fGXujOEzSpc"
+             data-title="L'ÎLE TORTUE" data-client="Flo" data-cat="2026" data-dur="00:03:12">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">L'ÎLE TORTUE</span><span class="v-cat">2026</span></div>
+                <div class="v-info-row"><span class="v-client">Flo</span><span class="v-dur">00:03:12</span></div>
+            </div>
+        </div>
+
+                  <div class="v-card" data-category="doc" data-youtube-id="gU5rJvFgyn8"
+             data-title="DANS LA FORÊT" data-client="Célie, Miguel" data-cat="2026" data-dur="00:04:04">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">DANS LA FORÊT</span><span class="v-cat">2026</span></div>
+                <div class="v-info-row"><span class="v-client">Célie, Miguel</span><span class="v-dur">00:04:04</span></div>
+            </div>
+        </div>
+
+                  <div class="v-card" data-category="doc" data-youtube-id="bE88n93QsOo"
+             data-title="LA MEUF" data-client="Gounti, Juliette" data-cat="2026" data-dur="00:07:27">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">LA MEUF</span><span class="v-cat">2026</span></div>
+                <div class="v-info-row"><span class="v-client">Gounti, Juliette</span><span class="v-dur">00:07:27</span></div>
+            </div>
+        </div>
+
+                  <div class="v-card" data-category="doc" data-youtube-id="hlF-ddDuYPA"
+             data-title="LES AVENTURES D'OCÉANE" data-client="Mila, Gigi" data-cat="2026" data-dur="00:05:09">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">LES AVENTURES D'OCÉANE</span><span class="v-cat">2026</span></div>
+                <div class="v-info-row"><span class="v-client">Mila, Gigi</span><span class="v-dur">00:05:09</span></div>
+            </div>
+        </div>
+
+                  <div class="v-card" data-category="doc" data-youtube-id="eANFUWnhC1A"
+             data-title="DANS LES BOIS" data-client="Charles" data-cat="2026" data-dur="00:05:26">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">DANS LES BOIS</span><span class="v-cat">2026</span></div>
+                <div class="v-info-row"><span class="v-client">Charles</span><span class="v-dur">00:05:26</span></div>
+            </div>
+        </div>
+
+                  <div class="v-card" data-category="doc" data-youtube-id="WTk3HYL6I0o"
+             data-title="BÉTON ARMÉ" data-client="Fabien, John" data-cat="2026" data-dur="00:06:03">
+            <div class="v-thumb" style="background-image:linear-gradient(to bottom,#004848,#2a1060,#1a0838)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">BÉTON ARMÉ</span><span class="v-cat">2026</span></div>
+                <div class="v-info-row"><span class="v-client">Fabien, John</span><span class="v-dur">00:06:03</span></div>
+            </div>
+        </div>
+
+        <!-- ↓ Dailymotion — remplace DM_XXXX par l'ID de la vidéo (ex: dailymotion.com/video/x8abc12 → x8abc12) -->
+        <div class="v-card" data-dailymotion-id="xaewbbe"
+             data-title="ENIGME DOUCEUR" data-client="Julia, Rosa, Chloé, Léo, Camon" data-cat="2020" data-dur="00:06:32">
+            <div class="v-thumb" style="background-image:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">ENIGME DOUCEUR</span><span class="v-cat">2020</span></div>
+                <div class="v-info-row"><span class="v-client">Julia, Rosa, Chloé, Léo, Camon</span><span class="v-dur">00:06:32</span></div>
+            </div>
+        </div>
+
+        <div class="v-card" data-dailymotion-id="xaew9ra"
+             data-title="KESSCÉ" data-client="Antonin, Aurélia, Tristan, Morgane" data-cat="2021" data-dur="00:17:17">
+            <div class="v-thumb" style="background-image:linear-gradient(135deg,#2d1b69,#11998e,#38ef7d)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">KESSCÉ</span><span class="v-cat">2021</span></div>
+                <div class="v-info-row"><span class="v-client">Antonin, Aurélia, Tristan, Morgane</span><span class="v-dur">00:17:17</span></div>
+            </div>
+        </div>
+
+        <div class="v-card" data-dailymotion-id="xaevwgq"
+             data-title="C'EST LE DINDAR QUI M'A DJII" data-client="Juliette, Antoine, Valentin, Julien, Lucette, Camon, Chloé, Julia, Alix" data-cat="2023" data-dur="00:22:43">
+            <div class="v-thumb" style="background-image:linear-gradient(135deg,#4a1880,#FF1F8A,#ff6b35)"></div>
+            <div class="v-overlay"></div><div class="v-play"></div>
+            <div class="v-info">
+                <hr class="v-info-divider">
+                <div class="v-info-row"><span class="v-title">C'EST LE DINDAR QUI M'A DJII</span><span class="v-cat">2023</span></div>
+                <div class="v-info-row"><span class="v-client">Juliette, Antoine, Valentin, Julien, Lucette <br> Camon, Chloé, Julia, Alix </span><span class="v-dur">00:22:43</span></div>
             </div>
         </div>
 
@@ -366,34 +843,35 @@
 
 
 <!-- ════════ RÉALISATEURS ════════ -->
-<section id="directors">
+<section id="directors" aria-label="Organisateurs">
     <div class="sec-header"><span class="sec-label">Les gens qui vivent à Laval</span></div>
     <div class="ed-title-row">
         <h2 class="sec-big-white">Orga</h2>
     </div>
     <div class="dir-list">
-        <!-- Remplace href="#" par l'URL du site de chaque orga -->
-        <div class="dir-row"><a class="dir-name" href="https://rassine.bandcamp.com/" target="_blank">Sarah Munro</a><div class="dir-right"><span class="dir-stat">Bandcamp</span><span class="dir-arrow">→</span></div></div>
-        <div class="dir-row"><a class="dir-name" href="https://www.instagram.com/charlycaillaux/" target="_blank">Charly Caillaux</a><div class="dir-right"><span class="dir-stat">Insta</span><span class="dir-arrow">→</span></div></div>
-        <div class="dir-row"><a class="dir-name" href="https://www.leboncoin.fr/ad/decoration/3200044820" target="_blank">Julia Solans</a><div class="dir-right"><span class="dir-stat">Le bon Coin</span><span class="dir-arrow">→</span></div></div>
-        <div class="dir-row"><a class="dir-name" href="https://www.youtube.com/watch?v=Y5oBHATLKc0&t=1s" target="_blank">Ali Deroche</a><div class="dir-right"><span class="dir-stat">Tiddles</span><span class="dir-arrow">→</span></div></div>
+        <div class="dir-row"><a class="dir-name" href="https://rassine.bandcamp.com/" target="_blank" rel="noopener noreferrer">Sarah Munro</a><div class="dir-right"><span class="dir-stat">Bandcamp</span><span class="dir-arrow">→</span></div></div>
+        <div class="dir-row"><a class="dir-name" href="https://www.instagram.com/charlycaillaux/" target="_blank" rel="noopener noreferrer">Charly Caillaux</a><div class="dir-right"><span class="dir-stat">Insta</span><span class="dir-arrow">→</span></div></div>
+        <div class="dir-row"><a class="dir-name" href="https://www.leboncoin.fr/ad/decoration/3200044820" target="_blank" rel="noopener noreferrer">Julia Solans</a><div class="dir-right"><span class="dir-stat">Le bon Coin</span><span class="dir-arrow">→</span></div></div>
+        <div class="dir-row"><a class="dir-name" href="https://www.youtube.com/watch?v=Y5oBHATLKc0&t=1s" target="_blank" rel="noopener noreferrer">Ali Deroche</a><div class="dir-right"><span class="dir-stat">Tiddles</span><span class="dir-arrow">→</span></div></div>
     </div>
 </section>
 
 <!-- ════════ CONTACT ════════ -->
-<section id="contact">
+<section id="contact" aria-label="Contact">
     <div class="sec-header"><span class="sec-label">Laguépie</span><span class="sec-est">[ 3/6 FLIP ]</span></div>
     <div class="contact-grid">
         <h2 class="contact-big">CONTACT</h2>
         <div class="contact-right">
             <div class="contact-block"><label>Adresse</label>Notre Dame de Laval, 12270 Saint-André de Najac</div>
-            <div class="contact-block"><label>Email</label><a href="mailto:charlycaillaux@gmail.com">charlycaillaux@gmail.com</a></div>
+            <div class="contact-block"><label>Email</label><a href="mailto:caillaux.charly@gmail.com">Charly Caillaux</a></div>
         </div>
     </div>
 </section>
 
+</main>
+
 <footer>
-    <div class="footer-copy">© 2026 3/6 FLIP. @aurasan_vn</div>
+    <div class="footer-copy">© 2026 3/6 FLIP @aurasan_vn</div>
 </footer>
 
 <script src="script.js"></script>

@@ -2,7 +2,7 @@
 // ── Chargement des miniatures YouTube ──
 document.querySelectorAll('.v-card[data-youtube-id]').forEach(card => {
     const id = card.dataset.youtubeId;
-    if (!id || id.startsWith('VOTRE')) return; 
+    if (!id || id.startsWith('VOTRE')) return;
 
     const thumb = card.querySelector('.v-thumb');
     const img   = new Image();
@@ -17,6 +17,15 @@ document.querySelectorAll('.v-card[data-youtube-id]').forEach(card => {
     img.src = `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
 });
 
+// ── Chargement des miniatures Dailymotion ──
+document.querySelectorAll('.v-card[data-dailymotion-id]').forEach(card => {
+    const id = card.dataset.dailymotionId;
+    if (!id || id.startsWith('DM_')) return;
+
+    const thumb = card.querySelector('.v-thumb');
+    thumb.style.backgroundImage = `url('https://www.dailymotion.com/thumbnail/video/${id}')`;
+});
+
 // ── Lightbox ──
 const modal        = document.getElementById('modal');
 const vimeoIframe  = document.getElementById('vimeoIframe');
@@ -26,11 +35,16 @@ const modalCat     = document.getElementById('modalCat');
 const modalDur     = document.getElementById('modalDur');
 
 function openModal(card) {
-    const id = card.dataset.youtubeId;
-    if (!id || id.startsWith('VOTRE')) return;
+    const ytId = card.dataset.youtubeId;
+    const dmId = card.dataset.dailymotionId;
 
-
-    vimeoIframe.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&modestbranding=1`;
+    if (ytId && !ytId.startsWith('VOTRE')) {
+        vimeoIframe.src = `https://www.youtube.com/embed/${ytId}?autoplay=1&rel=0&modestbranding=1`;
+    } else if (dmId && !dmId.startsWith('DM_')) {
+        vimeoIframe.src = `https://www.dailymotion.com/embed/video/${dmId}?autoplay=1`;
+    } else {
+        return;
+    }
 
     modalTitle.textContent  = card.dataset.title  || '';
     modalClient.textContent = card.dataset.client || '';
