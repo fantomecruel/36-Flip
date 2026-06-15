@@ -1,20 +1,27 @@
 
 // ── Chargement des miniatures YouTube ──
+// hqdefault.jpg existe TOUJOURS pour une vidéo publique → on l'affiche
+// immédiatement (aucune carte ne reste vide). On tente ensuite la version
+// HD (maxresdefault) en arrière-plan, et on ne l'utilise QUE si elle existe
+// vraiment (sinon YouTube renvoie un placeholder gris de 120×90).
 document.querySelectorAll('.v-card[data-youtube-id]').forEach(card => {
     const id = card.dataset.youtubeId;
     if (!id || id.startsWith('VOTRE')) return;
 
     const thumb = card.querySelector('.v-thumb');
-    const img   = new Image();
-    img.onload = () => {
-        if (img.naturalWidth === 120 && img.naturalHeight === 90) {
-            thumb.style.backgroundImage = `url('https://img.youtube.com/vi/${id}/hqdefault.jpg')`;
-        } else {
+
+    // 1) miniature de base, garantie de s'afficher
+    thumb.style.backgroundImage = `url('https://img.youtube.com/vi/${id}/hqdefault.jpg')`;
+
+    // 2) tentative HD, sans bloquer l'affichage
+    const hd = new Image();
+    hd.onload = () => {
+        // maxresdefault réelle = largeur > 120 ; le placeholder gris fait 120×90
+        if (hd.naturalWidth > 120) {
             thumb.style.backgroundImage = `url('https://img.youtube.com/vi/${id}/maxresdefault.jpg')`;
         }
     };
-    img.onerror = () => { thumb.style.backgroundImage = `url('https://img.youtube.com/vi/${id}/hqdefault.jpg')`; };
-    img.src = `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
+    hd.src = `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
 });
 
 // ── Chargement des miniatures Dailymotion ──
@@ -26,11 +33,23 @@ document.querySelectorAll('.v-card[data-dailymotion-id]').forEach(card => {
     thumb.style.backgroundImage = `url('https://www.dailymotion.com/thumbnail/video/${id}')`;
 });
 
+// ── Thèmes et numéros d'édition par année ──
+// Modifie ici si tu changes les thèmes ou ajoutes une édition
+const editions = {
+    '2020': { theme: 'Énigme',                 num: 1 },
+    '2021': { theme: 'La plante des ténèbres',  num: 2 },
+    '2022': { theme: 'Sport',                   num: 3 },
+    '2023': { theme: "L'amour est dans le pré", num: 4 },
+    '2024': { theme: "L'Overworld",             num: 5 },
+    '2026': { theme: 'Dans la forêt',           num: 6 }
+};
+
 // ── Lightbox ──
 const modal        = document.getElementById('modal');
 const vimeoIframe  = document.getElementById('vimeoIframe');
 const modalTitle   = document.getElementById('modalTitle');
 const modalClient  = document.getElementById('modalClient');
+const modalTheme   = document.getElementById('modalTheme');
 const modalCat     = document.getElementById('modalCat');
 const modalDur     = document.getElementById('modalDur');
 
@@ -50,6 +69,10 @@ function openModal(card) {
     modalClient.textContent = card.dataset.client || '';
     modalCat.textContent    = card.dataset.cat    || '';
     modalDur.textContent    = card.dataset.dur    || '';
+
+    // thème + édition associés à l'année de la vidéo
+    const ed = editions[card.dataset.cat];
+    modalTheme.textContent = ed ? `${ed.theme} - Edition #${ed.num}` : '';
 
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
