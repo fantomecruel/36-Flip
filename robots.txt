@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 
 # URL GitHub Pages
-Sitemap: https://auraevn.github.io/36-Flip/sitemap.xml
+Sitemap: https://fantomecruel.github.io/36-Flip/sitemap.xml
