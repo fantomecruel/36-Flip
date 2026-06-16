@@ -193,7 +193,7 @@ nav {
     display: flex; justify-content: space-between; align-items: center;
 }
 .modal-title  { font-family: var(--font-cond); font-weight: 700; font-size: 16px; letter-spacing: .1em; text-transform: uppercase; color: var(--pink); }
-.modal-client { font-family: var(--font-cond); font-weight: 700; font-size: 14px; letter-spacing: .08em; text-transform: lowercase; }
+.modal-client { font-family: var(--font-cond); font-weight: 700; font-size: 14px; letter-spacing: .08em; text-transform: none; }
 .modal-theme  { font-family: var(--font-cond); font-weight: 400; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--teal); margin-top: 4px; }
 .modal-right  { display: flex; gap: 24px; align-items: center; }
 .modal-cat    { font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--teal); }
